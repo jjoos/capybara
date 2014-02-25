@@ -92,7 +92,9 @@ class Capybara::Selenium::Driver < Capybara::Driver::Base
     # Use instance variable directly so we avoid starting the browser just to reset the session
     if @browser
       begin @browser.manage.delete_all_cookies
-      rescue Selenium::WebDriver::Error::UnhandledError
+      rescue Selenium::WebDriver::Error::UnhandledError =>
+        p 'ERROR RESETTING COOKIES'
+        p e
         # delete_all_cookies fails when we've previously gone
         # to about:blank, so we rescue this error and do nothing
         # instead.
