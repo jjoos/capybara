@@ -78,7 +78,13 @@ module Capybara
     def reset!
       if @touched
         driver.reset!
-        assert_no_selector :xpath, "/html/body/*"
+        begin
+          assert_no_selector :xpath, "/html/body/*"
+        rescue
+          puts 'Saving screenshot.'
+          driver.save_screenshot('tmp/error.png')
+          raise
+        end
         @touched = false
       end
       raise @server.error if Capybara.raise_server_errors and @server and @server.error
